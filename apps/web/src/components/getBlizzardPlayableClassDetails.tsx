@@ -69,8 +69,6 @@ export default function PlayableClassDetailsComponent() {
           <div>
             <h1 className="text-2xl font-bold mb-2">{classDetailsQuery.data.name}</h1>
             <p><span className="font-semibold">ID:</span> {classDetailsQuery.data.id}</p>
-            {/* Render other details from classDetailsQuery.data */}
-            {/* <pre>{JSON.stringify(classDetailsQuery.data, null, 2)}</pre> */}
           </div>
         )}
       </div>
