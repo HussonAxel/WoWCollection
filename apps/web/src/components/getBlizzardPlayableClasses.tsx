@@ -12,7 +12,7 @@ export default function BlizzardPlayableClasses() {
 
     const playableClassesQuery = useQuery(
         trpc.blizzard.getPlayableClassesIndex.queryOptions(
-            {region, locale},
+            { region, locale },
             {
                 staleTime: 5 * 60 * 1000,
             }
@@ -20,31 +20,33 @@ export default function BlizzardPlayableClasses() {
     )
 
     return (
-        <div> 
+        <div>
             <h1>
-                WoW Playable classes : 
+                WoW Playable classes :
             </h1>
             <section>
-            {playableClassesQuery.isLoading && <p>Loading classes...</p>}
-            {playableClassesQuery.isError && (
-                <p>Error loading playable classes : {playableClassesQuery.error.message}</p>
-            )}
-            {playableClassesQuery.isSuccess && (
-                <div>
-                    <h2> Classes : </h2>
-                    <ul>
-                        {(playableClassesQuery.data as any)?.classes?.map((wowClass: any) => (
-                        <Link 
-                        params={{classId: wowClass.name.toLowerCase()}}
-                        to="/classes/$classId">
-                            <li key={wowClass.id}>
-                                {wowClass.name}
-                            </li>
-                        </Link>
-                        ))}
-                    </ul>
-                </div>
-            )}
+                {playableClassesQuery.isLoading && <p>Loading classes...</p>}
+                {playableClassesQuery.isError && (
+                    <p>Error loading playable classes : {playableClassesQuery.error.message}</p>
+                )}
+                {playableClassesQuery.isSuccess && (
+                    <div>
+                        <ul>
+                            {(playableClassesQuery.data as any)?.classes?.map((wowClass: any) => (
+                                <Link
+                                    key={wowClass.id}
+                                    params={{ classSlug: wowClass.name.toLowerCase() }}
+                                    to="/classes/$classSlug"
+                                    className="block hover:text-blue-500"
+                                >
+                                    <li>
+                                        {wowClass.name}
+                                    </li>
+                                </Link>
+                            ))}
+                        </ul>
+                    </div>
+                )}
             </section>
         </div>
     )

@@ -15,7 +15,7 @@ import { Route as LoginImport } from './routes/login'
 import { Route as DashboardImport } from './routes/dashboard'
 import { Route as ClassesImport } from './routes/classes'
 import { Route as IndexImport } from './routes/index'
-import { Route as ClassesClassIdImport } from './routes/classes.$classId'
+import { Route as ClassesClassSlugImport } from './routes/classes/$classSlug'
 
 // Create/Update Routes
 
@@ -43,9 +43,9 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const ClassesClassIdRoute = ClassesClassIdImport.update({
-  id: '/$classId',
-  path: '/$classId',
+const ClassesClassSlugRoute = ClassesClassSlugImport.update({
+  id: '/$classSlug',
+  path: '/$classSlug',
   getParentRoute: () => ClassesRoute,
 } as any)
 
@@ -81,11 +81,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
-    '/classes/$classId': {
-      id: '/classes/$classId'
-      path: '/$classId'
-      fullPath: '/classes/$classId'
-      preLoaderRoute: typeof ClassesClassIdImport
+    '/classes/$classSlug': {
+      id: '/classes/$classSlug'
+      path: '/$classSlug'
+      fullPath: '/classes/$classSlug'
+      preLoaderRoute: typeof ClassesClassSlugImport
       parentRoute: typeof ClassesImport
     }
   }
@@ -94,11 +94,11 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface ClassesRouteChildren {
-  ClassesClassIdRoute: typeof ClassesClassIdRoute
+  ClassesClassSlugRoute: typeof ClassesClassSlugRoute
 }
 
 const ClassesRouteChildren: ClassesRouteChildren = {
-  ClassesClassIdRoute: ClassesClassIdRoute,
+  ClassesClassSlugRoute: ClassesClassSlugRoute,
 }
 
 const ClassesRouteWithChildren =
@@ -109,7 +109,7 @@ export interface FileRoutesByFullPath {
   '/classes': typeof ClassesRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
-  '/classes/$classId': typeof ClassesClassIdRoute
+  '/classes/$classSlug': typeof ClassesClassSlugRoute
 }
 
 export interface FileRoutesByTo {
@@ -117,7 +117,7 @@ export interface FileRoutesByTo {
   '/classes': typeof ClassesRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
-  '/classes/$classId': typeof ClassesClassIdRoute
+  '/classes/$classSlug': typeof ClassesClassSlugRoute
 }
 
 export interface FileRoutesById {
@@ -126,21 +126,21 @@ export interface FileRoutesById {
   '/classes': typeof ClassesRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
-  '/classes/$classId': typeof ClassesClassIdRoute
+  '/classes/$classSlug': typeof ClassesClassSlugRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/classes' | '/dashboard' | '/login' | '/classes/$classId'
+  fullPaths: '/' | '/classes' | '/dashboard' | '/login' | '/classes/$classSlug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/classes' | '/dashboard' | '/login' | '/classes/$classId'
+  to: '/' | '/classes' | '/dashboard' | '/login' | '/classes/$classSlug'
   id:
     | '__root__'
     | '/'
     | '/classes'
     | '/dashboard'
     | '/login'
-    | '/classes/$classId'
+    | '/classes/$classSlug'
   fileRoutesById: FileRoutesById
 }
 
@@ -180,7 +180,7 @@ export const routeTree = rootRoute
     "/classes": {
       "filePath": "classes.tsx",
       "children": [
-        "/classes/$classId"
+        "/classes/$classSlug"
       ]
     },
     "/dashboard": {
@@ -189,8 +189,8 @@ export const routeTree = rootRoute
     "/login": {
       "filePath": "login.tsx"
     },
-    "/classes/$classId": {
-      "filePath": "classes.$classId.tsx",
+    "/classes/$classSlug": {
+      "filePath": "classes/$classSlug.tsx",
       "parent": "/classes"
     }
   }
