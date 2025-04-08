@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Outlet, useRouterState } from '@tanstack/react-router'
 import BlizzardPlayableClassesList from '@/components/getBlizzardPlayableClasses' // Or correct path/name
 
 export const Route = createFileRoute('/classes')({
@@ -6,10 +6,14 @@ export const Route = createFileRoute('/classes')({
 })
 
 function ClassesListComponent() { // Renamed for clarity
+  const isRootPath = useRouterState({
+    select: (state) => state.location.pathname === '/classes'
+  })
+
   return (
     <div>
-      {/* Renders the component that shows the list */}
-      <BlizzardPlayableClassesList />
+      {isRootPath && <BlizzardPlayableClassesList />}
+      <Outlet />
     </div>
   )
 }

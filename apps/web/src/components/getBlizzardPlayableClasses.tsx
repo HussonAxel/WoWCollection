@@ -6,8 +6,8 @@ import { useQuery } from "@tanstack/react-query"; // Correct import
 import { Link } from "@tanstack/react-router";
 
 export default function BlizzardPlayableClasses() {
-    const [region, setRegion] = useState("us")
-    const [locale, setLocale] = useState("en_US"); // Add state for locale if needed
+    const [region] = useState("us")
+    const [locale] = useState("en_US");
     const trpc = useTRPC();
 
     const playableClassesQuery = useQuery(

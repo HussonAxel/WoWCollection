@@ -36,7 +36,7 @@ export default function PlayableClassDetailsComponent() {
   
     if (isNaN(classId)) {
       return (
-        <div className="container mx-auto p-4">
+        <div>
           <p className="text-red-600">Invalid Class ID in URL.</p>
           <Link to="/classes" className="text-blue-500 hover:underline mt-2 block">
             &larr; Back to Classes List
@@ -46,7 +46,7 @@ export default function PlayableClassDetailsComponent() {
     }
   
     return (
-      <div className="container mx-auto p-4">
+      <div>
         <Link to="/classes" className="text-blue-500 hover:underline mb-4 block">
           &larr; Back to Classes List
         </Link>
@@ -67,8 +67,8 @@ export default function PlayableClassDetailsComponent() {
   
         {classDetailsQuery.isSuccess && classDetailsQuery.data && (
           <div>
-            <h1 className="text-2xl font-bold mb-2">{classDetailsQuery.data.name}</h1>
-            <p><span className="font-semibold">ID:</span> {classDetailsQuery.data.id}</p>
+            <h1 className="text-2xl font-bold mb-2">{(classDetailsQuery.data as any).name}</h1>
+            <p><span className="font-semibold">ID:</span> {(classDetailsQuery.data as any).id}</p>
           </div>
         )}
       </div>
