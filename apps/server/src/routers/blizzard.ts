@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import { router, publicProcedure } from "../lib/trpc";
 import { getBlizzardAccessToken } from "src/utils/blizzardApi"; // Adjust path if needed
+import { TRPCError } from "@trpc/server";
 
 // Helper function to get the API base URL
 function getApiBaseUrl(region: string): string {
@@ -108,17 +109,20 @@ export const blizzardRouter = router({
     .input(
       z
         .object({
+          classId: z.number(),
           region: z.string().optional().default("us"),
           locale: z.string().optional().default("en_US"),
-          classId: z.string().optional().default("0")
         })
-        .optional(),
     )
     .query(async ({ input }) => {
-      const region = input?.region ?? process.env.BLIZZARD_REGION ?? "us"
-      const locale = input?.locale ?? "en_US"
-      const classId = input
+      const { classId, region = "us", locale = "en_US" } = input;
 
+      if (classId <= 0) {
+        throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Invalid Class ID provided.',
+        });
+    }
       const token = await getBlizzardAccessToken(region)
 
       const apiUrl = `${getApiBaseUrl(region)}/data/wow/playable-class/${classId}?locale=${locale}`;

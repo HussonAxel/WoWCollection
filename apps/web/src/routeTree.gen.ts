@@ -15,7 +15,7 @@ import { Route as LoginImport } from './routes/login'
 import { Route as DashboardImport } from './routes/dashboard'
 import { Route as ClassesImport } from './routes/classes'
 import { Route as IndexImport } from './routes/index'
-import { Route as ClassesClassSlugImport } from './routes/classes/$classSlug'
+import { Route as ClassesClassSlugImport } from './routes/classes.$classSlug'
 
 // Create/Update Routes
 
@@ -190,7 +190,7 @@ export const routeTree = rootRoute
       "filePath": "login.tsx"
     },
     "/classes/$classSlug": {
-      "filePath": "classes/$classSlug.tsx",
+      "filePath": "classes.$classSlug.tsx",
       "parent": "/classes"
     }
   }

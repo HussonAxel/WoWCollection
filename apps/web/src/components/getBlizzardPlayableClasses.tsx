@@ -35,7 +35,7 @@ export default function BlizzardPlayableClasses() {
                             {(playableClassesQuery.data as any)?.classes?.map((wowClass: any) => (
                                 <Link
                                     key={wowClass.id}
-                                    params={{ classSlug: wowClass.name.toLowerCase() }}
+                                    params={{ classSlug: wowClass.id}}
                                     to="/classes/$classSlug"
                                     className="block hover:text-blue-500"
                                 >

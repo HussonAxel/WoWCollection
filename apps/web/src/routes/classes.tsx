@@ -1,10 +1,17 @@
+// src/routes/classes.tsx - SHOULD LOOK LIKE THIS
 import { createFileRoute } from '@tanstack/react-router'
-import BlizzardPlayableClasses from '@/components/getBlizzardPlayableClasses'
+// Make SURE this is the LIST component
+import BlizzardPlayableClassesList from '@/components/getBlizzardPlayableClasses' // Or correct path/name
 
 export const Route = createFileRoute('/classes')({
-  component: RouteComponent,
+  component: ClassesListComponent, // Use this component
 })
 
-function RouteComponent() {
-  return <BlizzardPlayableClasses />
+function ClassesListComponent() { // Renamed for clarity
+  return (
+    <div>
+      {/* Renders the component that shows the list */}
+      <BlizzardPlayableClassesList />
+    </div>
+  )
 }
