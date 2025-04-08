@@ -11,18 +11,13 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as PlayableClassesImport } from './routes/playableClasses'
 import { Route as LoginImport } from './routes/login'
 import { Route as DashboardImport } from './routes/dashboard'
+import { Route as ClassesImport } from './routes/classes'
 import { Route as IndexImport } from './routes/index'
+import { Route as ClassesClassIdImport } from './routes/classes.$classId'
 
 // Create/Update Routes
-
-const PlayableClassesRoute = PlayableClassesImport.update({
-  id: '/playableClasses',
-  path: '/playableClasses',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const LoginRoute = LoginImport.update({
   id: '/login',
@@ -36,10 +31,22 @@ const DashboardRoute = DashboardImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const ClassesRoute = ClassesImport.update({
+  id: '/classes',
+  path: '/classes',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const ClassesClassIdRoute = ClassesClassIdImport.update({
+  id: '/$classId',
+  path: '/$classId',
+  getParentRoute: () => ClassesRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -51,6 +58,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/classes': {
+      id: '/classes'
+      path: '/classes'
+      fullPath: '/classes'
+      preLoaderRoute: typeof ClassesImport
       parentRoute: typeof rootRoute
     }
     '/dashboard': {
@@ -67,61 +81,81 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
-    '/playableClasses': {
-      id: '/playableClasses'
-      path: '/playableClasses'
-      fullPath: '/playableClasses'
-      preLoaderRoute: typeof PlayableClassesImport
-      parentRoute: typeof rootRoute
+    '/classes/$classId': {
+      id: '/classes/$classId'
+      path: '/$classId'
+      fullPath: '/classes/$classId'
+      preLoaderRoute: typeof ClassesClassIdImport
+      parentRoute: typeof ClassesImport
     }
   }
 }
 
 // Create and export the route tree
 
+interface ClassesRouteChildren {
+  ClassesClassIdRoute: typeof ClassesClassIdRoute
+}
+
+const ClassesRouteChildren: ClassesRouteChildren = {
+  ClassesClassIdRoute: ClassesClassIdRoute,
+}
+
+const ClassesRouteWithChildren =
+  ClassesRoute._addFileChildren(ClassesRouteChildren)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/classes': typeof ClassesRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
-  '/playableClasses': typeof PlayableClassesRoute
+  '/classes/$classId': typeof ClassesClassIdRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/classes': typeof ClassesRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
-  '/playableClasses': typeof PlayableClassesRoute
+  '/classes/$classId': typeof ClassesClassIdRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/classes': typeof ClassesRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
-  '/playableClasses': typeof PlayableClassesRoute
+  '/classes/$classId': typeof ClassesClassIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/login' | '/playableClasses'
+  fullPaths: '/' | '/classes' | '/dashboard' | '/login' | '/classes/$classId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/login' | '/playableClasses'
-  id: '__root__' | '/' | '/dashboard' | '/login' | '/playableClasses'
+  to: '/' | '/classes' | '/dashboard' | '/login' | '/classes/$classId'
+  id:
+    | '__root__'
+    | '/'
+    | '/classes'
+    | '/dashboard'
+    | '/login'
+    | '/classes/$classId'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ClassesRoute: typeof ClassesRouteWithChildren
   DashboardRoute: typeof DashboardRoute
   LoginRoute: typeof LoginRoute
-  PlayableClassesRoute: typeof PlayableClassesRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ClassesRoute: ClassesRouteWithChildren,
   DashboardRoute: DashboardRoute,
   LoginRoute: LoginRoute,
-  PlayableClassesRoute: PlayableClassesRoute,
 }
 
 export const routeTree = rootRoute
@@ -135,13 +169,19 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/classes",
         "/dashboard",
-        "/login",
-        "/playableClasses"
+        "/login"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/classes": {
+      "filePath": "classes.tsx",
+      "children": [
+        "/classes/$classId"
+      ]
     },
     "/dashboard": {
       "filePath": "dashboard.tsx"
@@ -149,8 +189,9 @@ export const routeTree = rootRoute
     "/login": {
       "filePath": "login.tsx"
     },
-    "/playableClasses": {
-      "filePath": "playableClasses.tsx"
+    "/classes/$classId": {
+      "filePath": "classes.$classId.tsx",
+      "parent": "/classes"
     }
   }
 }

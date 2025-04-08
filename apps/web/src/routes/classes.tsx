@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import BlizzardPlayableClasses from '@/components/getBlizzardPlayableClasses'
 
-export const Route = createFileRoute('/playableClasses')({
+export const Route = createFileRoute('/classes')({
   component: RouteComponent,
 })
 

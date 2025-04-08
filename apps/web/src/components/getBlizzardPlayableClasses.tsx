@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useTRPC } from "@/utils/trpc"; // Correct import based on your example
 import { useQuery } from "@tanstack/react-query"; // Correct import
+import { Link } from "@tanstack/react-router";
 
 export default function BlizzardPlayableClasses() {
     const [region, setRegion] = useState("us")
@@ -33,9 +34,13 @@ export default function BlizzardPlayableClasses() {
                     <h2> Classes : </h2>
                     <ul>
                         {(playableClassesQuery.data as any)?.classes?.map((wowClass: any) => (
+                        <Link 
+                        params={{classId: wowClass.name.toLowerCase()}}
+                        to="/classes/$classId">
                             <li key={wowClass.id}>
                                 {wowClass.name}
                             </li>
+                        </Link>
                         ))}
                     </ul>
                 </div>
