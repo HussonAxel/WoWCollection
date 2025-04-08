@@ -1,28 +1,36 @@
 "use client"
 
 import { useState } from "react";
-import { useTRPC } from "@/utils/trpc"; // Correct import based on your example
-import { useQuery } from "@tanstack/react-query"; // Correct import
+import { useTRPC } from "@/utils/trpc";
+import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "@tanstack/react-router";
 
 export default function PlayableClassDetailsComponent() {
-    const { classSlug: classIdString } = useParams({ from: "/classes/$classSlug" });
-  
-    const classId = parseInt(classIdString, 10);
+    const { classSlug } = useParams({ from: "/classes/$classSlug" });
     const trpc = useTRPC();
-  
     const [region] = useState("us");
     const [locale] = useState("en_US");
-  
+
+    const classesQuery = useQuery(
+      trpc.blizzard.getPlayableClassesIndex.queryOptions(
+        { region, locale },
+        { staleTime: 60 * 60 * 1000 }
+      )
+    );
+
+    const classId = (classesQuery.data as any)?.classes?.find(
+      (c: any) => c.name.toLowerCase() === classSlug
+    )?.id;
+
     const classDetailsQuery = useQuery(
       trpc.blizzard.getPlayableClassDetails.queryOptions(
         {
-          classId: classId,
+          classId: classId || 0,
           region: region,
           locale: locale,
         },
         {
-          enabled: !isNaN(classId),
+          enabled: !!classId,
           staleTime: 60 * 60 * 1000,
           retry: (failureCount, error: any) => {
             if (error?.data?.code === "NOT_FOUND") {
@@ -33,38 +41,45 @@ export default function PlayableClassDetailsComponent() {
         },
       ),
     );
-  
-    if (isNaN(classId)) {
+
+    if (classesQuery.isLoading) {
       return (
         <div>
-          <p className="text-red-600">Invalid Class ID in URL.</p>
+          <p>Loading class information...</p>
+        </div>
+      );
+    }
+
+    if (!classId) {
+      return (
+        <div>
+          <p className="text-red-600">Invalid Class Name in URL.</p>
           <Link to="/classes" className="text-blue-500 hover:underline mt-2 block">
             &larr; Back to Classes List
           </Link>
         </div>
       );
     }
-  
+
     return (
       <div>
         <Link to="/classes" className="text-blue-500 hover:underline mb-4 block">
           &larr; Back to Classes List
         </Link>
-  
-        {classDetailsQuery.isLoading && <p>Loading details for Class ID: {classId}...</p>}
-  
+
+        {classDetailsQuery.isLoading && <p>Loading details for {classSlug}...</p>}
+
         {classDetailsQuery.isError && (
           <div>
             <h2 className="text-red-600 font-bold">Error loading class details</h2>
             <p>
-              {/* Display specific message for NOT_FOUND */}
               {classDetailsQuery.error?.data?.code === "NOT_FOUND"
-                ? `Could not find a playable class with ID "${classId}".`
+                ? `Could not find a playable class "${classSlug}".`
                 : `An error occurred: ${classDetailsQuery.error.message}`}
             </p>
           </div>
         )}
-  
+
         {classDetailsQuery.isSuccess && classDetailsQuery.data && (
           <div>
             <h1 className="text-2xl font-bold mb-2">{(classDetailsQuery.data as any).name}</h1>
