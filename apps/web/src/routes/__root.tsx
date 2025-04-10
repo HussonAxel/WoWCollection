@@ -7,7 +7,7 @@ import appCss from "../index.css?url";
 import type { QueryClient } from "@tanstack/react-query";
 import type { TRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import type { AppRouter } from "../../../server/src/routers";
-import { RootLayout } from "@/components/app/root-layout";
+import { RootLayout } from "@/components/layout/root-layout";
 
 export interface RouterAppContext {
   trpc: TRPCOptionsProxy<AppRouter>;

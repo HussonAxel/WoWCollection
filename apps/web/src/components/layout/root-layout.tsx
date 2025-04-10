@@ -3,8 +3,8 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Outlet, useRouterState } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import Loader from "@/components/loader";
-import { AppSidebar } from "@/components/app/app-sidebar";
-import { AppHeader } from "@/components/app/app-header";
+import { AppSidebar } from "@/components/layout/app-sidebar";
+import { AppHeader } from "@/components/layout/app-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 export function RootLayout() {
