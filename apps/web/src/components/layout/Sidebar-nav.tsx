@@ -1,15 +1,15 @@
 import { Link } from "@tanstack/react-router";
-import { Button } from "@/components/ui/button"; 
+import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator"; 
+import { Separator } from "@/components/ui/separator";
 import {
   PlusCircledIcon,
   DashboardIcon,
   ListBulletIcon,
   BarChartIcon,
-  ReaderIcon, 
-  PersonIcon, 
-  ArchiveIcon, 
+  ReaderIcon,
+  PersonIcon,
+  ArchiveIcon,
   FileTextIcon,
   MagicWandIcon,
   DotsHorizontalIcon,
@@ -42,7 +42,7 @@ export function SidebarNav() {
   const user = {
     name: "shadcn",
     email: "m@example.com",
-    avatar: "/avatars/01.png", 
+    avatar: "/avatars/01.png",
     fallback: "CN",
   };
 
@@ -68,9 +68,14 @@ export function SidebarNav() {
               key={item.label}
               variant="ghost"
               className="w-full justify-start"
-              asChild 
+              asChild
             >
-              <Link to={item.href}>
+              <Link
+                to={item.href}
+                activeProps={{
+                  className: "bg-accent text-accent-foreground",
+                }}
+              >
                 <item.icon className="mr-2 h-4 w-4" />
                 {item.label}
               </Link>
@@ -92,7 +97,12 @@ export function SidebarNav() {
                 className="w-full justify-start"
                 asChild
               >
-                <Link to={item.href}>
+                <Link
+                  to={item.href}
+                  activeProps={{
+                    className: "bg-accent text-accent-foreground",
+                  }}
+                >
                   <item.icon className="mr-2 h-4 w-4" />
                   {item.label}
                 </Link>
@@ -111,7 +121,12 @@ export function SidebarNav() {
               className="w-full justify-start"
               asChild
             >
-              <Link to={item.href}>
+              <Link
+                to={item.href}
+                activeProps={{
+                  className: "bg-accent text-accent-foreground",
+                }}
+              >
                 <item.icon className="mr-2 h-4 w-4" />
                 {item.label}
               </Link>
