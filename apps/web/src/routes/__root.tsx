@@ -8,12 +8,12 @@ import {
   useRouterState,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import Header from "../components/header";
 import appCss from "../index.css?url";
 import type { QueryClient } from "@tanstack/react-query";
 import type { TRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import type { AppRouter } from "../../../server/src/routers";
 import Loader from "@/components/loader";
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
 
 export interface RouterAppContext {
   trpc: TRPCOptionsProxy<AppRouter>;
@@ -55,8 +55,9 @@ function RootDocument() {
       </head>
       <body>
         <div className="grid h-svh grid-rows-[auto_1fr]">
-          <Header />
-          {isFetching ? <Loader /> : <Outlet />}
+          <DashboardLayout>
+            {isFetching ? <Loader /> : <Outlet />}
+          </DashboardLayout>
         </div>
         <Toaster richColors />
         <TanStackRouterDevtools position="bottom-left" />
