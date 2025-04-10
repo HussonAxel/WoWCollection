@@ -1,19 +1,13 @@
-import { Toaster } from "@/components/ui/sonner";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
   HeadContent,
-  Outlet,
   Scripts,
   createRootRouteWithContext,
-  useRouterState,
 } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import appCss from "../index.css?url";
 import type { QueryClient } from "@tanstack/react-query";
 import type { TRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import type { AppRouter } from "../../../server/src/routers";
-import Loader from "@/components/loader";
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { RootLayout } from "@/components/app/root-layout";
 
 export interface RouterAppContext {
   trpc: TRPCOptionsProxy<AppRouter>;
@@ -46,22 +40,13 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
 });
 
 function RootDocument() {
-  const isFetching = useRouterState({ select: (s) => s.isLoading });
-
   return (
     <html lang="en" className="dark">
       <head>
         <HeadContent />
       </head>
       <body>
-        <div className="grid h-svh grid-rows-[auto_1fr]">
-          <DashboardLayout>
-            {isFetching ? <Loader /> : <Outlet />}
-          </DashboardLayout>
-        </div>
-        <Toaster richColors />
-        <TanStackRouterDevtools position="bottom-left" />
-        <ReactQueryDevtools position="bottom" buttonPosition="bottom-right" />
+        <RootLayout />
         <Scripts />
       </body>
     </html>
